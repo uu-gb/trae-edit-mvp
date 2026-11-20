@@ -1,0 +1,9 @@
+{
+  "name": "trae-edit-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI 段落协作编辑器 MVP：授权选区 -> Agent 网关(统一协议) -> 预览 -> 应用器合并 -> 版本回滚",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

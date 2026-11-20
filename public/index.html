@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 段落协作编辑器 · TRAE MVP</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">AI 段落协作编辑器 <span class="tag">TRAE MVP · 协议 v1</span></div>
+  <div class="status-chips">
+    <span class="chip" id="chipVersion">v1</span>
+    <span class="chip" id="chipProvider">provider: -</span>
+    <span class="chip" id="chipRanges">授权区 0 个</span>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button id="btnAuthSel" title="把当前选区加入授权区间">授权当前选区</button>
+  <button id="btnAuthPara" title="授权第一个段落（演示/测试用）">授权首段</button>
+  <button id="btnAuthAll" title="授权全文（会触发覆盖率护栏，可演示强制应用）">全选并授权</button>
+  <button id="btnClearAuth" class="ghost">清空授权区</button>
+  <span class="sep"></span>
+  <button id="btnSave" class="ghost">保存我的手动编辑</button>
+</div>
+
+<main class="layout">
+  <section class="card editor-card">
+    <div class="card-title">文档 <span class="muted" id="docMeta"></span></div>
+    <div class="editor-wrap" id="editorWrap">
+      <div class="backdrop" id="backdrop"><div class="highlights" id="highlights"></div></div>
+      <textarea id="editor" spellcheck="false"></textarea>
+    </div>
+    <div class="sel-hint muted" id="selHint">在文档中选中一段文字，然后点击「授权当前选区」</div>
+  </section>
+
+  <aside class="side">
+    <section class="card">
+      <div class="card-title">Agent 网关</div>
+      <label class="lbl">Provider</label>
+      <select id="provider">
+        <option value="mock">mock（离线演示，无需 API key）</option>
+        <option value="openai">openai 兼容（Kimi / DeepSeek / OpenAI…）</option>
+        <option value="trae">trae（TRAE CLI 无头 Agent）</option>
+      </select>
+      <label class="lbl">修改指令</label>
+      <textarea id="instruction" rows="3" placeholder="例：把这段改成引用块 / 修剪多余空白 / 加粗关键句…"></textarea>
+      <button id="btnRun" class="primary">运行 Agent → 生成预览</button>
+      <div class="hint muted" id="providerHint"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-title">已授权区间 <span class="muted">（AI 只能改这些段落）</span></div>
+      <div id="rangeChips" class="range-chips"></div>
+      <div class="hint muted" id="rangesEmpty">尚未授权任何区间 — 先选中文字再授权，护栏才会放行</div>
+    </section>
+
+    <section class="card" id="previewCard" hidden>
+      <div class="card-title">修改预览 <span class="muted" id="previewStatus"></span></div>
+      <div id="previewBody"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-title">版本历史</div>
+      <div id="historyList" class="history"></div>
+    </section>
+  </aside>
+</main>
+
+<footer class="statusbar">
+  <span id="statusLeft"></span>
+  <span class="muted">模型只出「数据」，应用器和护栏负责「手」与「门禁」</span>
+</footer>
+
+<div id="toast" class="toast" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
